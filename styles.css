@@ -1,0 +1,45 @@
+#gemini-limit-indicator {
+  position: absolute;
+  bottom: 24px; /* 下部からの位置 */
+  right: 24px;  /* 右端からの位置 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  font-family: 'Google Sans', Arial, sans-serif;
+  font-size: 14px;
+  color: #e3e3e3;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  z-index: 100;
+  backdrop-filter: blur(4px); /* 背景を少しぼかしてリッチな見た目に */
+}
+
+.gemini-limit-badge .limit-label {
+  margin-right: 6px;
+  font-weight: 500;
+}
+
+.gemini-limit-badge .limit-value {
+  font-weight: 700;
+  color: #a8c7fa; /* ダークテーマに合わせたブルー */
+}
+
+/* 確実に入力コンテナからの相対位置になるように調整 */
+input-container {
+  position: relative;
+}
+
+/* 画面幅がPCの半分くらい（1024px以下）になった場合は画面上部に移動させる */
+@media (max-width: 1024px) {
+  #gemini-limit-indicator {
+    position: fixed;
+    bottom: auto;
+    top: 14px; /* 画面上部からの位置 */
+    right: 140px; /* 「チャットを新規作成」ボタンの左側あたりに配置 */
+    padding: 4px 12px;
+    font-size: 12px; /* 少し小さく */
+    z-index: 9999; /* 他のUI（トップバーなど）より上に表示 */
+  }
+}
