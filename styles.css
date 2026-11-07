@@ -1,34 +1,192 @@
 #gemini-limit-indicator {
   position: absolute;
-  bottom: 24px; /* 下部からの位置 */
-  right: 24px;  /* 右端からの位置 */
+  bottom: 24px;
+  right: 24px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 16px;
-  background-color: rgba(255, 255, 255, 0.1);
+  flex-direction: column;
+  background-color: rgba(30, 31, 32, 0.92);
   border-radius: 16px;
   font-family: 'Google Sans', Arial, sans-serif;
-  font-size: 14px;
   color: #e3e3e3;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  z-index: 100;
-  backdrop-filter: blur(4px); /* 背景を少しぼかしてリッチな見た目に */
+  z-index: 9999;
+  backdrop-filter: blur(12px);
+  user-select: none;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  transition: all 0.2s ease-in-out;
+  box-sizing: border-box;
+}
+
+#gemini-limit-indicator:hover {
+  background-color: rgba(45, 47, 50, 0.96);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+#gemini-limit-indicator.expanded {
+  background-color: #1e1f20;
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  min-width: 270px;
+}
+
+/* ヘッダー部分（常に表示、クリックでトグル） */
+.gemini-limit-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  cursor: pointer;
+  border-radius: 16px;
+}
+
+.gemini-limit-badge {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
 }
 
 .gemini-limit-badge .limit-label {
   margin-right: 6px;
   font-weight: 500;
+  color: #c4c7c5;
 }
 
 .gemini-limit-badge .limit-value {
   font-weight: 700;
-  color: #a8c7fa; /* ダークテーマに合わせたブルー */
+  color: #a8c7fa;
+}
+
+.gemini-limit-expand-icon {
+  margin-left: 8px;
+  font-size: 9px;
+  color: #8e918f;
+  transition: transform 0.25s ease;
+  display: inline-block;
+  line-height: 1;
+}
+
+#gemini-limit-indicator.expanded .gemini-limit-expand-icon {
+  transform: rotate(180deg);
+}
+
+/* 詳細セクション（展開時のみ表示） */
+.gemini-limit-details {
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+  padding: 4px 14px 12px 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: default;
+}
+
+#gemini-limit-indicator.expanded .gemini-limit-details {
+  display: flex;
+}
+
+.limit-detail-section {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.limit-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+}
+
+.limit-detail-label {
+  color: #c4c7c5;
+  font-weight: 500;
+}
+
+.limit-detail-value {
+  color: #a8c7fa;
+  font-weight: 700;
+}
+
+.limit-progress-bg {
+  width: 100%;
+  height: 6px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.limit-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #7cacf8, #a8c7fa);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.limit-progress-fill.warn {
+  background: #f28b82;
+}
+
+.limit-detail-reset {
+  font-size: 11px;
+  color: #8e918f;
+}
+
+.limit-detail-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.limit-refresh-btn {
+  background: none;
+  border: none;
+  padding: 4px 6px;
+  color: #8e918f;
+  cursor: pointer;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-family: inherit;
+  transition: color 0.15s, background-color 0.15s;
+}
+
+.limit-refresh-btn:hover {
+  color: #e3e3e3;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.limit-refresh-btn.rotating svg {
+  animation: limit-spin 0.8s linear infinite;
+}
+
+@keyframes limit-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.limit-usage-link {
+  font-size: 11px;
+  color: #a8c7fa;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+  transition: color 0.15s;
+  cursor: pointer;
+}
+
+.limit-usage-link:hover {
+  text-decoration: underline;
+  color: #d3e3fd;
 }
 
 /* 確実に入力コンテナからの相対位置になるように調整 */
 input-container {
-  position: relative;
+  position: relative !important;
 }
 
 /* 画面幅がPCの半分くらい（1024px以下）になった場合は画面上部に移動させる */
@@ -36,10 +194,8 @@ input-container {
   #gemini-limit-indicator {
     position: fixed;
     bottom: auto;
-    top: 14px; /* 画面上部からの位置 */
-    right: 140px; /* 「チャットを新規作成」ボタンの左側あたりに配置 */
-    padding: 4px 12px;
-    font-size: 12px; /* 少し小さく */
-    z-index: 9999; /* 他のUI（トップバーなど）より上に表示 */
+    top: 14px;
+    right: 140px;
+    z-index: 9999;
   }
 }

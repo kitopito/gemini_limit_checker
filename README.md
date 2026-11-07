@@ -6,12 +6,16 @@
 ## ✨ Features
 
 - **Real-time Indicator**: Displays your current Gemini usage limit percentage and reset time right on the screen.
+- **Detailed Popover Panel**: Click or hover over the indicator to reveal an interactive card showing:
+  - Current limit with a visual progress bar and exact reset time.
+  - Weekly usage limit with progress bar and reset date/time.
+  - Quick refresh button (🔄) and direct link to Gemini's full Usage page.
 - **Responsive Design**: Automatically relocates the indicator to the top bar on smaller screens so it never gets in your way.
 - **Auto-Update**: The usage limit fetches new data in the background and updates seamlessly.
 
 > [!WARNING]
 > **Important Note on Auto-Update Trigger:**
-> This extension is specifically configured to update its data when you send a message using **`Ctrl + Enter`** (or `Cmd + Enter` on Mac). It **does not** trigger an update on a regular `Enter` key press. It will also update when you manually click the Send button, or automatically every 3 minutes.
+> This extension is specifically configured to update its data when you send a message using **`Ctrl + Enter`** (or `Cmd + Enter` on Mac). It **does not** trigger an update on a regular `Enter` key press. It will also update when you manually click the Send button, automatically every 3 minutes, or by clicking the indicator badge directly.
 
 ## 📦 Installation
 
